@@ -17,7 +17,7 @@ public interface HoldayService {
     List<HoldayResponseDto>getArchiveByEmployee(Long idEmployee);
 
 
-    HoldayResponseDto addHolday(HoldayRequestDto holdayRequestDto);
+    HoldayResponseDto addHolday(HoldayRequestDto holdayRequestDto,Long employeeId);
     HoldayResponseDto updateHolday(HoldayRequestDto holdayRequestDto , Long id);
     void archivedHolday(Long id);
     void noarchivedHolday(Long id);

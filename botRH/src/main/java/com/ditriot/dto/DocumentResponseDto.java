@@ -1,7 +1,6 @@
 package com.ditriot.dto;
 
 import com.ditriot.model.DocType;
-import com.ditriot.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +17,10 @@ public class DocumentResponseDto {
     private DocType docType;
     private String fileType;
     private String downloadUrl;
+    @Lob
     private byte[] data;
     private Long fileSize;
     private Boolean archived;
+
 
 }

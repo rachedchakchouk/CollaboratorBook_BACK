@@ -1,11 +1,10 @@
 package com.detiriot.businessms.service;
 
-import com.detiriot.businessms.dto.CompanyResponseDto;
-import com.detiriot.businessms.dto.EmployeeResponseDto;
-import com.detiriot.businessms.dto.JobRequestDto;
-import com.detiriot.businessms.dto.JobResponseDto;
+import com.detiriot.businessms.dto.*;
 import com.detiriot.businessms.mapper.CompanyMapper;
+import com.detiriot.businessms.mapper.DepartmentMapper;
 import com.detiriot.businessms.mapper.JobMapper;
+import com.detiriot.businessms.mapper.OfficeMapper;
 import com.detiriot.businessms.model.*;
 import com.detiriot.businessms.repo.*;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,9 @@ public class JobServiceImpl implements JobService {
     final CompanyRepo companyRepo;
     final OfficeRepo officeRepo;
     final DepartmentRepo departmentRepo;
+    final DepartmentMapper departmentMapper;
     final EmployeeService employeeService;
-
+final OfficeMapper officeMapper;
     final CompanyMapper companyMapper;
 
     public JobServiceImpl(JobRepo jobRepo,
@@ -30,6 +30,8 @@ public class JobServiceImpl implements JobService {
                           EmployeeService employeeService,
                           CompanyMapper companyMapper,
                           OfficeRepo officeRepo,
+                          OfficeMapper officeMapper,
+                          DepartmentMapper departmentMapper,
                           DepartmentRepo departmentRepo) {
         this.jobRepo = jobRepo;
         this.jobMapper = jobMapper;
@@ -38,13 +40,27 @@ public class JobServiceImpl implements JobService {
         this.departmentRepo = departmentRepo;
         this.officeRepo = officeRepo;
         this.employeeService = employeeService;
+        this.departmentMapper =departmentMapper;
+        this.officeMapper=officeMapper;
     }
 
 
     @Override
     public JobResponseDto getJobById(Long id) {
         Job job = jobRepo.findById(id).get();
+        Department department=job.getDepartment();
+        Office office=department.getOffice();
+        DepartmentResponseDto departmentResponseDto=departmentMapper.departmentToDepartmentResponseDto(department);
+        departmentResponseDto.setOffice(officeMapper.officeToOfficeResponseDto(office));
+        job.setDepartmentResponseDto(departmentResponseDto);
         return jobMapper.jobToJobResponseDto(job);
+    }
+    @Override
+    public DepartmentResponseDto getDepByJobId(Long id){
+        Job job = jobRepo.findById(id).get();
+        Department department=job.getDepartment();
+        DepartmentResponseDto departmentResponseDto=departmentMapper.departmentToDepartmentResponseDto(department);
+        return departmentResponseDto;
     }
 
     @Override
@@ -83,7 +99,6 @@ public class JobServiceImpl implements JobService {
         Job job = jobMapper.jobRequestDtoToJob(jobRequestDto);
         //jobRepo.save(job);
         // Company company= companyRepo.findById(Long.parseLong(getCompanyIdfromJob(job.getId()))).get();
-        job.setCompanyId(getCompanyIdfromJob(job.getId()));
         job.setArchived(false);
         Job addJob = jobRepo.save(job);
         JobResponseDto jobResponseDto = jobMapper.jobToJobResponseDto(addJob);
@@ -129,6 +144,13 @@ public class JobServiceImpl implements JobService {
         Office office = department.getOffice();
         Company company = office.getCompany();
         return company.getId();
+    }
+
+    @Override
+    public DepartmentResponseDto getDepFromJob(Long id) {
+        Job job = jobRepo.findById(id).get();
+        Department department = job.getDepartment();
+        return departmentMapper.departmentToDepartmentResponseDto(department);
     }
 
     @Override

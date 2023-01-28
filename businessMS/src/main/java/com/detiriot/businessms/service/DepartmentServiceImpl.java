@@ -2,7 +2,9 @@ package com.detiriot.businessms.service;
 
 import com.detiriot.businessms.dto.DepartmentRequestDto;
 import com.detiriot.businessms.dto.DepartmentResponseDto;
+import com.detiriot.businessms.dto.OfficeResponseDto;
 import com.detiriot.businessms.mapper.DepartmentMapper;
+import com.detiriot.businessms.mapper.OfficeMapper;
 import com.detiriot.businessms.model.Department;
 import com.detiriot.businessms.model.Office;
 import com.detiriot.businessms.repo.DepartmentRepo;
@@ -16,19 +18,23 @@ import java.util.stream.Collectors;
 public class DepartmentServiceImpl implements DepartmentService {
     final DepartmentRepo departmentRepo;
     final DepartmentMapper departmentMapper;
+    final OfficeMapper officeMapper;
     final OfficeRepo officeRepo;
 
-    public DepartmentServiceImpl(DepartmentRepo departmentRepo, DepartmentMapper departmentMapper, OfficeRepo officeRepo) {
+    public DepartmentServiceImpl(DepartmentRepo departmentRepo, DepartmentMapper departmentMapper, OfficeRepo officeRepo , OfficeMapper officeMapper) {
         this.departmentRepo = departmentRepo;
         this.departmentMapper = departmentMapper;
         this.officeRepo = officeRepo;
+        this.officeMapper = officeMapper;
     }
 
     @Override
     public DepartmentResponseDto getDepartmentById(Long id) {
         Department department = departmentRepo.findById(id).get();
-
-        return departmentMapper.departmentToDepartmentResponseDto(department);
+        Office office=department.getOffice();
+        DepartmentResponseDto departmentResponseDto=departmentMapper.departmentToDepartmentResponseDto(department);
+        departmentResponseDto.setOffice(officeMapper.officeToOfficeResponseDto(office));
+        return departmentResponseDto;
     }
 
     @Override
@@ -105,5 +111,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setArchived(true);
         departmentRepo.save(department);
 
+    }
+
+    @Override
+    public OfficeResponseDto getOfficeByDepId(Long depId) {
+        Department department=departmentRepo.findById(depId).get();
+        Office office=department.getOffice();
+        OfficeResponseDto officeResponseDto=officeMapper.officeToOfficeResponseDto(office);
+        return officeResponseDto;
     }
 }

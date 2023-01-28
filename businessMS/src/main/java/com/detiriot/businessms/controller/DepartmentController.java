@@ -2,7 +2,7 @@ package com.detiriot.businessms.controller;
 
 import com.detiriot.businessms.dto.DepartmentRequestDto;
 import com.detiriot.businessms.dto.DepartmentResponseDto;
-import com.detiriot.businessms.mapper.DepartmentMapper;
+import com.detiriot.businessms.dto.OfficeResponseDto;
 import com.detiriot.businessms.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,10 @@ public class DepartmentController {
     public List<DepartmentResponseDto> getByOffice(@PathVariable Long id) {
         return departmentService.getByOffice(id);
     }
-
+    @GetMapping("/getOffice/{id}")
+    public OfficeResponseDto getOfficeByDepId(@PathVariable Long id){
+        return  departmentService.getOfficeByDepId(id);
+    }
     @GetMapping("/active/byOffice/{id}")
     public List<DepartmentResponseDto> getActiveByOffice(@PathVariable Long id) {
         return departmentService.getActiveByOffice(id);

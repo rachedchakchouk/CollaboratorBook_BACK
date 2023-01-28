@@ -4,7 +4,10 @@ import com.ditriot.dto.EmployeeRequestDto;
 import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.dto.JobResponseDto;
 import com.ditriot.mapper.EmployeeMapper;
-import com.ditriot.model.*;
+import com.ditriot.model.Contract;
+import com.ditriot.model.Employee;
+import com.ditriot.model.Project;
+import com.ditriot.model.User;
 import com.ditriot.repo.ContractRepo;
 import com.ditriot.repo.EmployeeRepo;
 import com.ditriot.repo.ProjectRepo;
@@ -101,6 +104,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long employeeId) {
         Employee employee=employeeRepo.findById(employeeId).get();
         employeeRepo.delete(employee);
+        userService.deleteUserByEmployee(employeeId);
 
     }
 
@@ -121,6 +125,30 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeResponseDto> getByProject(Long projectId) {
+        Project project=projectRepo.findById(projectId).get();
+        List<Employee> employees=employeeRepo.findEmployeesByProjects(project);
+        List<EmployeeResponseDto>employeeResponseDtos=employees.stream().map(employee -> employeeMapper.employeeToEmployeeResponseDto(employee)).collect(Collectors.toList());
+        return employeeResponseDtos;
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getActiveByProject(Long projectId) {
+        Project project=projectRepo.findById(projectId).get();
+        List<Employee> employees=employeeRepo.findEmployeesByProjectsAndArchived(project,false);
+        List<EmployeeResponseDto>employeeResponseDtos=employees.stream().map(employee -> employeeMapper.employeeToEmployeeResponseDto(employee)).collect(Collectors.toList());
+        return employeeResponseDtos;
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getArchivedByProject(Long projectId) {
+        Project project=projectRepo.findById(projectId).get();
+        List<Employee> employees=employeeRepo.findEmployeesByProjectsAndArchived(project,true);
+        List<EmployeeResponseDto>employeeResponseDtos=employees.stream().map(employee -> employeeMapper.employeeToEmployeeResponseDto(employee)).collect(Collectors.toList());
+        return employeeResponseDtos;
+    }
+
+    @Override
     public void affectationjobtoEmployee(Long eId, Long jId) {
         Employee employee=employeeRepo.findById(eId).get();
         JobResponseDto job =jobService.getJobById(jId);
@@ -133,10 +161,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void employeeToProject(Long employeeId, Long projectId) {
         Employee employee=employeeRepo.findById(employeeId).get();
         Project project=projectRepo.findById(projectId).get();
-        List<Project> projects=employee.getProjects();
+List<Project> projects=employee.getProjects();
+List<Employee> employees =project.getEmployees();
         projects.add(project);
+        employee.setProjects(null);
         employee.setProjects(projects);
+        employees.add(employee);
+        project.setEmployees(null);
+        project.setEmployees(employees);
         employeeRepo.save(employee);
+        projectRepo.save(project);
     }
 
     @Override
@@ -164,7 +198,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeResponseDto> getActiveEmployeesByCompany(Long cId) {
         List<Employee> employees=employeeRepo.findEmployeesByCompanyIdAndArchived(cId,false);
+
         List<EmployeeResponseDto>employeeResponseDtos=employees.stream().map(employee -> employeeMapper.employeeToEmployeeResponseDto(employee)).collect(Collectors.toList());
+
         return employeeResponseDtos;
 
     }
@@ -198,6 +234,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void leavesCalculator(Long id) {
         Employee employee=employeeRepo.findById(id).get();
+        
       Contract contract=contractRepo.findContractByEmployeeAndArchived(employee,false);
      log.info("contrat:{}",contract.getId());
      log.info("startDate:{}", contract.getStartDate());
@@ -211,9 +248,34 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
+//    @Override
+//    public EmployeeResponseDto addEmployee(EmployeeRequestDto employeeRequestDto) {
+//        Employee employee=employeeMapper.employeeRequestDtoToEmployee(employeeRequestDto);
+//        employee.setArchived(false);
+//        Employee addEmployee=employeeRepo.save(employee);
+//        User user = new User();
+//        user.setIdEmployee(employee.getId());
+//        user.setUsername(employee.getProfessionalMail());
+//        user.setPassword(employee.getFirstName());
+//        user.setRole(employee.getRole().toString());
+//        EmployeeResponseDto employeeResponseDto=employeeMapper.employeeToEmployeeResponseDto(addEmployee);
+//        userService.saveUser(user);
+//        return employeeResponseDto;
+//    }
     @Override
-    public EmployeeResponseDto addEmployee(EmployeeRequestDto employeeRequestDto) {
-        Employee employee=employeeMapper.employeeRequestDtoToEmployee(employeeRequestDto);
+ public EmployeeResponseDto addEmployee(EmployeeRequestDto employeeRequestDto) {
+
+
+            User u =userService.getUser(employeeRequestDto.getProfessionalMail());
+
+            if (null !=u) {
+//                Employee e = employeeRepo.findEmployeeByProfessionalMail(employeeRequestDto.getProfessionalMail());
+//                return  employeeMapper.employeeToEmployeeResponseDto(e);
+                return null;
+            }
+            else    {
+
+                        Employee employee=employeeMapper.employeeRequestDtoToEmployee(employeeRequestDto);
         employee.setArchived(false);
         Employee addEmployee=employeeRepo.save(employee);
         User user = new User();
@@ -224,8 +286,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeResponseDto employeeResponseDto=employeeMapper.employeeToEmployeeResponseDto(addEmployee);
         userService.saveUser(user);
         return employeeResponseDto;
-    }
 
+            }
+
+
+
+    }
 
 
 }

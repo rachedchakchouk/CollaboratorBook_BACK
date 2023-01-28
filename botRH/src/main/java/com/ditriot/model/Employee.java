@@ -51,8 +51,8 @@ public class Employee {
     private List<Contract>templateContracts;
     @OneToMany (mappedBy = "employee")
     private List<Holday> holdays;
-    @ManyToMany(mappedBy="employeesProjects", cascade = CascadeType.ALL)
-    private List<Project>projects;
+    @ManyToMany(mappedBy="employees")
+    private List<Project> projects;
     @OneToMany (mappedBy = "employeeDestination")
     private List<Notification>notifications;
     @OneToMany (mappedBy = "employee")

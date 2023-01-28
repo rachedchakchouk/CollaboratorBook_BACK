@@ -2,7 +2,9 @@ package com.ditriot.service;
 
 import com.ditriot.dto.CommentRequestDto;
 import com.ditriot.dto.CommentResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.mapper.CommentMapper;
+import com.ditriot.mapper.EmployeeMapper;
 import com.ditriot.model.Comment;
 import com.ditriot.model.Employee;
 import com.ditriot.model.Post;
@@ -23,6 +25,7 @@ public class CommentServiceImpl implements CommentService {
     final EmployeeRepo employeeRepo;
     final CommentRepo commentRepo;
     final CommentMapper commentMapper;
+    final EmployeeMapper employeeMapper;
 
     @Override
     public List<CommentResponseDto> getAll() {
@@ -106,6 +109,12 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.commentToCommentResponseDto(comment);
     }
 
+    @Override
+    public EmployeeResponseDto getWriter(Long commentId) {
+        Comment comment=commentRepo.findById(commentId).get();
+        return employeeMapper.employeeToEmployeeResponseDto(comment.getEmployee());
+    }
+
 
     @Override
     public void commentToPost(Long commentId, Long postId) {
@@ -123,4 +132,5 @@ public class CommentServiceImpl implements CommentService {
         commentRepo.save(comment);
 
     }
+
 }

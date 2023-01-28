@@ -1,5 +1,6 @@
 package com.ditriot.service;
 
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.dto.PostRequestDto;
 import com.ditriot.dto.PostResponseDto;
 
@@ -19,6 +20,7 @@ public interface PostService {
     void deletePostsByEmployee(Long idEmployee);
     PostResponseDto archivePost(Long idPost);
     PostResponseDto noarchivePost(Long idPost);
+    EmployeeResponseDto getWriter(Long idPost);
 
     List<PostResponseDto> archivePostByEmployee(Long idEmployee);
     void  postToEmployee(Long postId,Long employeeId);

@@ -7,9 +7,9 @@ import com.ditriot.model.*;
 import com.ditriot.repo.EmployeeRepo;
 import com.ditriot.repo.HoldayRepo;
 import com.ditriot.repo.NotificationRepo;
+import com.ditriot.repo.ProjectRepo;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,21 +18,21 @@ public class HoldayServiceImpl implements HoldayService {
     final HoldayRepo holdayRepo;
     final HoldayMapper holdayMapper;
     final EmployeeService employeeService;
-    final ProjectService projectService;
+    final ProjectRepo projectrepo;
     final EmployeeRepo employeeRepo;
     final NotificationRepo notificationRepo;
 
     public HoldayServiceImpl(HoldayRepo holdayRepo,
                              HoldayMapper holdayMapper,
                              EmployeeService employeeService,
-                             ProjectService projectService,
+                             ProjectRepo projectrepo,
                              EmployeeRepo employeeRepo,
                              NotificationRepo notificationRepo
     ){
         this.holdayRepo = holdayRepo;
         this.holdayMapper = holdayMapper;
         this.employeeService=employeeService;
-        this.projectService=projectService;
+        this.projectrepo=projectrepo;
         this.employeeRepo=employeeRepo;
         this.notificationRepo=notificationRepo;
     }
@@ -75,81 +75,64 @@ public class HoldayServiceImpl implements HoldayService {
     }
 
     @Override
-    public HoldayResponseDto addHolday(HoldayRequestDto holdayRequestDto) {
+    public HoldayResponseDto addHolday(HoldayRequestDto holdayRequestDto ,Long employeeId) {
         Holday holday=holdayMapper.holdayRequestDtoToHolday(holdayRequestDto);
+        Employee employee=employeeRepo.findById(employeeId).get();
+
         holday.setArchived(false);
+        holday.setEmployee(employee);
+        employeeService.leavesCalculator(employeeId);
+        double hd=0.0;
+        switch (holday.getDuration()){
+            case ONE_DAY:hd=1;
+            case HALF_DAY:hd=0.5;
+            case TWO_DAYS:hd=2;
+            case THREE_DAYS:hd=3;
 
-        Employee employee=holday.getEmployee();
-        List<LocalDate> dates=null;
-        List<LocalDate> dates1=null;
-        dates.add(holday.getStartDate());
-        if (holday.getDuration()== TypeLeave.TWO_DAYS)
-            dates.add(holday.getStartDate().plusDays(1));
-        else if (holday.getDuration()==TypeLeave.THREE_DAYS)
-        {
-            dates.add(holday.getStartDate().plusDays(1));
-            dates.add(holday.getStartDate().plusDays(2));
         }
-        List<Project>projects=employee.getProjects();
-        List<Employee> employees=null;
-        List<Holday> holdays=null;
+        if (employee.getLeaveNumber()>hd){
+
+        //test
+
+        List<Project> projects=projectrepo.findProjectsByEmployeesAndArchived(employee,false);
+        for (Project project:projects)
+        {List<Employee> employees=employeeRepo.findEmployeesByProjectsAndArchived(project,false);
+             int d;
+            d=employees.size();
+            for (Employee e:employees) {
+                if (d>=1){
+               Holday holday1=holdayRepo.findHoldayByEmployeeAndDurationAndStartDateBetweenAndArchived(employee,TypeLeave.THREE_DAYS,holday.getStartDate().minusDays(2),holday.getStartDate().plusDays(2),false);
+                if (holday1!= null) {
+                    d = d - 1;
+
+                }
+                else
+                { Holday holday2=holdayRepo.findHoldayByEmployeeAndDurationAndStartDateBetweenAndArchived(employee,TypeLeave.TWO_DAYS,holday.getStartDate().minusDays(1),holday.getStartDate().plusDays(2),false);
+                    if (holday2!= null) {
+                        d = d - 1;
+                    }
+                    else {Holday holday3=holdayRepo.findHoldayByEmployeeAndDurationAndStartDateBetweenAndArchived(employee,TypeLeave.TWO_DAYS,holday.getStartDate(),holday.getStartDate().plusDays(2),false);
+                        if (holday2!= null) {
+                            d = d - 1;
+                    }
+
+                }
+                }
 
 
-
-        projects.stream().map(project -> project.getEmployeesProjects().addAll(employees));
-        employees.stream().map(employee1 -> employee1.getHoldays().addAll(holdays));
-        for (Holday holday1:
-             holdays
-             ) {if (holday1.getStatus()!=Status.PROVED);
-            holdays.remove(holday1);
-        }
-        for (Holday holday1:holdays
-             ) {
-            dates1.add(holday1.getStartDate());
-            if (holday1.getDuration()== TypeLeave.TWO_DAYS)
-                dates1.add(holday1.getStartDate().plusDays(1));
-            else if (holday1.getDuration()==TypeLeave.THREE_DAYS)
-            {
-                dates1.add(holday1.getStartDate().plusDays(1));
-                dates1.add(holday1.getStartDate().plusDays(2));
             }
 
 
         }
-        for (LocalDate date : dates
-        ){
-            for (LocalDate date1:dates1
-                 ) {if (date==date1)
-               {holday.setStatus(Status.REFUSED);
-                Notification notification=new Notification();
-                notification.setEmployeeDestination(employee);
-                notification.setNotificationType(NotificationType.INFO);
-                notification.setText("hello "+employee.getFirstName()+" your request for leave form "+holday.getStartDate().toString()+" for "+holday.getDuration().toString()+" has been refused.");
-                notification.setArchived(false);
-                notificationRepo.save(notification);}
-                else {holday.setStatus(Status.PENDING);
-                List<Employee> rhs=null;
-                   List<Employee> employeeList=employeeRepo.findByCompanyId(employee.getCompanyId());
-                for (Employee employee1:employeeList
-                ) {if (employee1.getRole()==Role.HUM_RES){
-                    rhs.add(employee1);
-                    for (Employee rh:rhs){
-                    Notification notification=new Notification();
-                    notification.setNotificationType(NotificationType.ALERT);
-                    notification.setEmployeeDestination(rh);
-                    notification.setText(employee.getFirstName()+" "+employee.getLastName()+"work as"+employee.getJob()+"has a request for a leave start at "+holday.getStartDate().toString()+" for "+holday.getDuration().toString());
-                    notification.setArchived(false);
-                    notificationRepo.save(notification);}
-                }
-                }
-
-                }
-            }
-
+if (d<1){
+holday.setStatus(Status.REFUSED);}
+else {holday.setStatus(Status.PENDING);}
         }
+
         Holday addHolday=holdayRepo.save(holday);
         HoldayResponseDto holdayResponseDto=holdayMapper.holdayToHoldayResponseDto(addHolday);
-        return holdayResponseDto;
+        return holdayResponseDto;}
+        else return null;
     }
 
     @Override

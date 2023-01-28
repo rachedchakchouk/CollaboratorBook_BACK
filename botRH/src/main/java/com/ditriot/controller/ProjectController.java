@@ -47,6 +47,7 @@ public class ProjectController {
         return projectService.getActiveByEmployee(id);
     }
 
+
     @GetMapping("/archived/byemployee/{id}")
     @ResponseBody
     public List<ProjectResponseDto> getArchivedByEmployee(@PathVariable Long id) {
@@ -81,6 +82,20 @@ public class ProjectController {
     public void deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
     }
-
+    @GetMapping("/byCompany/{id}")
+    @ResponseBody
+    public List<ProjectResponseDto> getByCompany(@PathVariable Long id) {
+        return projectService.getByCompany(id);
+    }
+    @GetMapping("/active/ByCompany/{id}")
+    @ResponseBody
+    public List<ProjectResponseDto> getActiveByCompany(@PathVariable Long id) {
+        return projectService.getActiveByCompany(id);
+    }
+    @GetMapping("/archived/ByCompany/{id}")
+    @ResponseBody
+    public List<ProjectResponseDto> getArchivedByCompany(@PathVariable Long id) {
+        return projectService.getArchivedByCompany(id);
+    }
 
 }

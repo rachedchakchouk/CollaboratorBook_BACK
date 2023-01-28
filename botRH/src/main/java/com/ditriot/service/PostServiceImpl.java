@@ -1,8 +1,10 @@
 package com.ditriot.service;
 
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.dto.JobResponseDto;
 import com.ditriot.dto.PostRequestDto;
 import com.ditriot.dto.PostResponseDto;
+import com.ditriot.mapper.EmployeeMapper;
 import com.ditriot.mapper.PostMapper;
 import com.ditriot.model.Employee;
 import com.ditriot.model.Post;
@@ -20,60 +22,28 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     final JobService jobService;
     final EmployeeRepo employeeRepo;
+    final EmployeeMapper employeeMapper;
     final PostRepo postRepo;
     final PostMapper  postMapper;
     @Override
     public List<PostResponseDto> showAllPostByCompany(Long companyId) {
-        List<PostResponseDto>postResponseDtos=null;
-        List<JobResponseDto> jobs=jobService.findAllByCompany(companyId);
-        for (JobResponseDto job : jobs
-        ){
-            List<Employee> employees=employeeRepo.findByJobId(job.getId());
-            for (Employee employee : employees
-            ){
-               List<Post> posts=postRepo.findByEmployee(employee);
-              postResponseDtos=  posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
-            }
-
-        }
-
+        List<Post> posts=postRepo.findPostsByEmployeeCompanyId(companyId);
+        List<PostResponseDto>postResponseDtos=posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
         return postResponseDtos ;
     }
 
     @Override
     public List<PostResponseDto> showActivePostByCompany(Long companyId) {
-        List<PostResponseDto>postResponseDtos=null;
-        List<JobResponseDto> jobs=jobService.findAllByCompany(companyId);
-        for (JobResponseDto job : jobs
-        ){
-            List<Employee> employees=employeeRepo.findByJobId(job.getId());
-            for (Employee employee : employees
-            ){
-                List<Post> posts=postRepo.findPostsByEmployeeAndArchived(employee,false);
-                postResponseDtos=  posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
-            }
-
-        }
-
+        List<Post> posts=postRepo.findPostsByEmployeeCompanyIdAndArchivedOrderByIdDesc(companyId,false);
+        List<PostResponseDto>postResponseDtos=posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
         return postResponseDtos ;
     }
 
     @Override
     public List<PostResponseDto> showArchivedPostByCompany(Long companyId) {
-        List<PostResponseDto>postResponseDtos=null;
-        List<JobResponseDto> jobs=jobService.findAllByCompany(companyId);
-        for (JobResponseDto job : jobs
-        ){
-            List<Employee> employees=employeeRepo.findByJobId(job.getId());
-            for (Employee employee : employees
-            ){
-                List<Post> posts=postRepo.findPostsByEmployeeAndArchived(employee,true);
-                postResponseDtos=  posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
-            }
-
-        }
-
-        return postResponseDtos ;
+    List<Post> posts=postRepo.findPostsByEmployeeCompanyIdAndArchivedOrderByIdDesc(companyId,true);
+    List<PostResponseDto>postResponseDtos=posts.stream().map(post -> postMapper.postToPostResponseDto(post)).collect(Collectors.toList());
+     return postResponseDtos ;
     }
 
     @Override
@@ -172,6 +142,13 @@ public class PostServiceImpl implements PostService {
         post.setArchived(false);
         postRepo.save(post);
         return postMapper.postToPostResponseDto(post);
+    }
+
+    @Override
+    public EmployeeResponseDto getWriter(Long idPost) {
+        Post post=postRepo.findById(idPost).get();
+        Employee employee=post.getEmployee();
+        return employeeMapper.employeeToEmployeeResponseDto(employee);
     }
 
     @Override

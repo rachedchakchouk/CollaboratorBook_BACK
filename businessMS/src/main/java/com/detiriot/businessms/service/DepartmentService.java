@@ -2,6 +2,7 @@ package com.detiriot.businessms.service;
 
 import com.detiriot.businessms.dto.DepartmentRequestDto;
 import com.detiriot.businessms.dto.DepartmentResponseDto;
+import com.detiriot.businessms.dto.OfficeResponseDto;
 
 import java.util.List;
 
@@ -25,4 +26,5 @@ public interface DepartmentService {
     void assignmentDepartmentToOffice(Long dId, Long oId);
 
     void archiveDepartment(Long departmentId);
+    OfficeResponseDto getOfficeByDepId(Long depId);
 }

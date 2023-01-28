@@ -79,7 +79,7 @@ public class DocumentController {
         documentService.documentToEmployee(documentId, employeeId);
     }
 
-    @PutMapping("addToEmployee/{documentId}/{postId}")
+    @PutMapping("addTPost/{documentId}/{postId}")
     public void addToPost(@PathVariable Long documentId, @PathVariable Long postId) {
         documentService.documentToPost(documentId, postId);
     }
@@ -108,9 +108,10 @@ public class DocumentController {
 
     public DocumentResponseDto uploadDocument(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws Exception {
         Document document = null;
-        String downloadUrl = "";
+
         document = documentService.saveDocument(id, file);
-        downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(document.getId().toString()).toUriString();
+        String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/RH/documents/download/").path(document.getId().toString()).toUriString();
+        System.out.println(downloadUrl);
         document.setDownloadUrl(downloadUrl);
         return documentMapper.documentToDocumentResponseDto(document);
     }

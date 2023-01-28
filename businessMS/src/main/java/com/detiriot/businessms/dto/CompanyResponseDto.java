@@ -1,6 +1,5 @@
 package com.detiriot.businessms.dto;
 
-import com.detiriot.businessms.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +18,8 @@ public class CompanyResponseDto {
     private  String address;
     private  String email;
     private  Boolean archived;
- @Transient
+    private Long idManger;
+
+    @Transient
     private EmployeeResponseDto employee;
 }

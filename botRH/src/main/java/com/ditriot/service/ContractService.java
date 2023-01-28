@@ -2,6 +2,7 @@ package com.ditriot.service;
 
 import com.ditriot.dto.ContractRequestDto;
 import com.ditriot.dto.ContractResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface ContractService {
    void archiveContract(Long id);
    void noarchiveContract(Long id);
    void deleteContract(Long id);
+   EmployeeResponseDto getEmployeeFromContract(Long id);
 
 
 

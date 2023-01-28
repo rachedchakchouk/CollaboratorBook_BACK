@@ -2,6 +2,7 @@ package com.ditriot.controller;
 
 import com.ditriot.dto.ContractRequestDto;
 import com.ditriot.dto.ContractResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.mapper.ContractMapper;
 import com.ditriot.service.ContractService;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,10 @@ public class ContractController {
     @DeleteMapping("/delete/{id}")
     public void deleteContract(@PathVariable Long id){contractService.deleteContract(id);}
 
-
+@GetMapping("/employeeFormContract/{id}")
+    public EmployeeResponseDto getEmployeeFormContract(@PathVariable Long id){
+        return contractService.getEmployeeFromContract(id);
+}
 
 
 

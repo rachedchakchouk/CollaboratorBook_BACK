@@ -2,7 +2,6 @@ package com.ditriot.service;
 
 import com.ditriot.dto.ClauseRequestDto;
 import com.ditriot.dto.ClauseResponseDto;
-import com.ditriot.dto.JobResponseDto;
 import com.ditriot.mapper.ClauseMapper;
 import com.ditriot.model.Clause;
 import com.ditriot.model.Contract;
@@ -82,59 +81,32 @@ public class ClauseServiceImp implements ClauseService{
 
     @Override
     public List<ClauseResponseDto> getClauseByCompany(Long id) {
-        List<JobResponseDto> jobs=jobService.findAllByCompany(id);
-        List<Employee> employees;
-        List<Clause> clauses=null;
-        for (JobResponseDto jobResponseDto:jobs
-             ) {
-            employees=employeeRepo.findByJobId(jobResponseDto.getId());
-            for (Employee employee : employees
-            ){
-            clauses= clauseRepo.findByWriter(employee);
-            }
-
-
-        }
+        List<Clause> clauses=clauseRepo.findClausesByWriterCompanyId(id);
         List<ClauseResponseDto> clauseResponseDtos=clauses.stream().map(clause -> clauseMapper.clauseToClauseResponseDto(clause)).collect(Collectors.toList());
         return clauseResponseDtos;
-    }
+
+
+    };
 
     @Override
     public List<ClauseResponseDto> getActiveClauseByCompany(Long id) {
-        List<JobResponseDto> jobs=jobService.findAllByCompany(id);
-        List<Employee> employees;
-        List<Clause> clauses=null;
-        for (JobResponseDto jobResponseDto:jobs
-        ) {
-            employees=employeeRepo.findByJobId(jobResponseDto.getId());
-            for (Employee employee : employees
-            ){
-                clauses= clauseRepo.findClausesByWriterAndArchived(employee,false);
-            }
+
+        List<Clause> clauses=clauseRepo.findClausesByWriterCompanyIdAndArchived(id,false);
 
 
-        }
         List<ClauseResponseDto> clauseResponseDtos=clauses.stream().map(clause -> clauseMapper.clauseToClauseResponseDto(clause)).collect(Collectors.toList());
         return clauseResponseDtos;
     }
 
     @Override
     public List<ClauseResponseDto> getArchivedClauseByCompany(Long id) {
-        List<JobResponseDto> jobs=jobService.findAllByCompany(id);
-        List<Employee> employees;
-        List<Clause> clauses=null;
-        for (JobResponseDto jobResponseDto:jobs
-        ) {
-            employees=employeeRepo.findByJobId(jobResponseDto.getId());
-            for (Employee employee : employees
-            ){
-                clauses= clauseRepo.findClausesByWriterAndArchived(employee,true);
-            }
+
+        List<Clause> clauses=clauseRepo.findClausesByWriterCompanyIdAndArchived(id,true);
 
 
-        }
         List<ClauseResponseDto> clauseResponseDtos=clauses.stream().map(clause -> clauseMapper.clauseToClauseResponseDto(clause)).collect(Collectors.toList());
-        return clauseResponseDtos;    }
+        return clauseResponseDtos;
+    }
 
     @Override
     public ClauseResponseDto createClause(ClauseRequestDto clauseRequestDto) {

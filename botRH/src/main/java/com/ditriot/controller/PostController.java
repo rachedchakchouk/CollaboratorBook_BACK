@@ -1,5 +1,6 @@
 package com.ditriot.controller;
 
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.dto.PostRequestDto;
 import com.ditriot.dto.PostResponseDto;
 import com.ditriot.mapper.PostMapper;
@@ -52,5 +53,8 @@ public class PostController {
     public void removePost(@PathVariable Long idp){
         postService.deletePost(idp);
     }
+
+    @GetMapping("/employeebypost/{idp}")
+    public EmployeeResponseDto getFromPost(@PathVariable Long idp){return postService.getWriter(idp);}
 
 }

@@ -1,6 +1,5 @@
 package com.ditriot.dto;
 
-import com.ditriot.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,8 @@ public class ClauseResponseDto {
     private String description;
     private LocalDate creationDate;
     private Boolean archived;
-//    @Transient
-//    private EmployeeResponseDto writer;
+    private String downloadUrl;
+
+    @Transient
+   private EmployeeResponseDto writer;
 }

@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponseDto> getByEmployee(Long id) {
         Employee employee=employeeRepo.findById(id).get();
-        List<Project> projects=projectRepo.findByEmployeesProjects(employee);
+        List<Project> projects=projectRepo.findByEmployees(employee);
         List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
         return projectResponseDtos;
     }
@@ -53,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponseDto> getActiveByEmployee(Long id) {
         Employee employee=employeeRepo.findById(id).get();
-        List<Project> projects=projectRepo.findProjectsByEmployeesProjectsAndArchived(employee,false);
+        List<Project> projects=projectRepo.findProjectsByEmployeesAndArchived(employee,false);
         List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
         return projectResponseDtos;
     }
@@ -61,7 +61,28 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponseDto> getArchivedByEmployee(Long id) {
         Employee employee=employeeRepo.findById(id).get();
-        List<Project> projects=projectRepo.findProjectsByEmployeesProjectsAndArchived(employee,true);
+        List<Project> projects=projectRepo.findProjectsByEmployeesAndArchived(employee,true);
+        List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
+        return projectResponseDtos;
+    }
+
+    @Override
+    public List<ProjectResponseDto> getByCompany(Long id) {
+        List<Project> projects=projectRepo.findProjectsByIdCompany(id);
+        List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
+        return projectResponseDtos;
+    }
+
+    @Override
+    public List<ProjectResponseDto> getActiveByCompany(Long id) {
+        List<Project> projects=projectRepo.findProjectsByIdCompanyAndArchived(id,false);
+        List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
+        return projectResponseDtos;
+    }
+
+    @Override
+    public List<ProjectResponseDto> getArchivedByCompany(Long id) {
+        List<Project> projects=projectRepo.findProjectsByIdCompanyAndArchived(id,true);
         List<ProjectResponseDto>projectResponseDtos=projects.stream().map(project -> projectMapper.projectToProjectResponseDto(project)).collect(Collectors.toList());
         return projectResponseDtos;
     }
@@ -113,11 +134,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void projectToEmployee(Long projectId, Long employeeId) {
-        Project project=projectRepo.findById(projectId).get();
-        Employee employee=employeeRepo.findById(employeeId).get();
-        List<Employee>employees=project.getEmployeesProjects();
-        employees.add(employee);
-        project.setEmployeesProjects(employees);
-        projectRepo.save(project);
+
     }
 }

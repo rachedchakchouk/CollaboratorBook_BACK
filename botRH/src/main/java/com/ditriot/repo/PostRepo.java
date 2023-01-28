@@ -9,6 +9,8 @@ import java.util.List;
 public interface PostRepo extends JpaRepository<Post,Long> {
     List<Post> findByEmployee(Employee employee);
     List<Post> findPostsByEmployeeAndArchived(Employee employee,Boolean b);
+List<Post> findPostsByEmployeeCompanyId(Long id);
+    List<Post> findPostsByEmployeeCompanyIdAndArchivedOrderByIdDesc(Long id,Boolean b);
 
     Long countAllByEmployee(Employee employee);
     Long countAllByArchived(Boolean aBoolean);

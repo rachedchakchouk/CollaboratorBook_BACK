@@ -13,7 +13,9 @@ public interface EmployeeService {
     void deleteEmployee(Long employeeId);
     void archiveemployee(Long employeeId);
     void noarchiveemployee(Long employeeId);
-
+    List<EmployeeResponseDto> getByProject(Long projectId);
+    List<EmployeeResponseDto> getActiveByProject(Long projectId);
+    List<EmployeeResponseDto> getArchivedByProject(Long projectId);
     String accountBalance(Long eid);
     List<EmployeeResponseDto> getEmployeesByCompany(Long cId);
     List<EmployeeResponseDto> getActiveEmployeesByCompany(Long cId);

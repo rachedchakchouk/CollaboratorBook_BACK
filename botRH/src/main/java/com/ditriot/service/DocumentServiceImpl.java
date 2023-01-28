@@ -50,7 +50,6 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentResponseDto getDocumentById(Long id) {
         Document document = documentRepo.findById(id).get();
-
         return documentMapper.documentToDocumentResponseDto(document);
     }
 
@@ -130,6 +129,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = documentRepo.findById(documentId).get();
         Post post = postRepo.findById(postId).get();
         List<Post> posts = document.getPosts();
+        document.setPosts(null);
         posts.add(post);
         document.setPosts(posts);
         document.setDocType(DocType.POST_IMG);
@@ -177,9 +177,11 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new Exception("Filename contains invalid path sequence" + fileName);
             }
             Document document = documentRepo.findById(id).get();
+            document.setDownloadUrl("http://localhost:8081/RH/documents/download/"+document.getId().toString());
             document.setName(fileName);
             document.setFileType(file.getContentType());
             document.setData(file.getBytes());
+            document.setFileSize(file.getSize());
             return documentRepo.save(document);
         } catch (Exception e) {
             throw new Exception("Could not save File: " + fileName);

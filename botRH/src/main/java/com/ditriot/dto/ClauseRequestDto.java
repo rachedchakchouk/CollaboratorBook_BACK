@@ -16,4 +16,5 @@ public class ClauseRequestDto {
     private LocalDate creationDate;
     private Boolean archived;
 
+
 }

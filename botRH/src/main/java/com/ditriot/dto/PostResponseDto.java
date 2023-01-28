@@ -14,4 +14,5 @@ public class PostResponseDto {
     private String photo;
     private LocalDate date;
     private Boolean archived;
+
 }

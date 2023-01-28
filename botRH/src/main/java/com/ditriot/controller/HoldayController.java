@@ -48,9 +48,9 @@ public class HoldayController {
         return holdayService.getArchiveByEmployee(id);
     }
 
-    @PostMapping("/newHoliday")
-    public HoldayResponseDto newHolday(@RequestBody HoldayRequestDto holdayRequestDto) {
-        return holdayService.addHolday(holdayRequestDto);
+ @PostMapping("/newHoliday/{idEmployee}")
+ public HoldayResponseDto newHolday(@RequestBody HoldayRequestDto holdayRequestDto,@PathVariable Long idEmployee) {
+        return holdayService.addHolday(holdayRequestDto,idEmployee);
     }
 
     @PutMapping("/holidaytoemployee/{idHolday}/{idEmployee}")

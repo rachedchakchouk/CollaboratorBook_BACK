@@ -16,5 +16,6 @@ public class OfficeResponseDto {
     private  String address;
     private  String email;
     private  Boolean archived;
-    {}
+
+
 }

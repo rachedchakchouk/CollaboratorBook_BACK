@@ -1,14 +1,11 @@
 package com.detiriot.businessms.model;
 
+import com.detiriot.businessms.dto.DepartmentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Data
@@ -22,8 +19,9 @@ public class Job {
     private String description;
     private  Boolean archived;
     private Long companyId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+@Transient
+private DepartmentResponseDto departmentResponseDto;
+    @ManyToOne
     private Department department;
 
 

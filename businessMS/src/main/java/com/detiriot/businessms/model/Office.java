@@ -22,8 +22,8 @@ public class Office {
     private  String address;
     private  String email;
     private  Boolean archived;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private  Company company;
-     @OneToMany(mappedBy = "office" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "office" , cascade = CascadeType.ALL)
     private List<Department> departments;
 }

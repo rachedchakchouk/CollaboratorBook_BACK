@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Transient;
 import java.util.List;
 
 @Data
@@ -18,5 +19,7 @@ public class JobResponseDto {
     private Long companyId;
     @ElementCollection
     private List<Long> employeeIds;
+    @Transient
+    private DepartmentResponseDto department;
 
 }

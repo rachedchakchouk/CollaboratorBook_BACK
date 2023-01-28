@@ -2,6 +2,7 @@ package com.ditriot.service;
 
 import com.ditriot.dto.CommentRequestDto;
 import com.ditriot.dto.CommentResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface CommentService {
    CommentResponseDto archiveComment( Long commentId);
    CommentResponseDto noarchiveComment( Long commentId);
 
-
+ EmployeeResponseDto getWriter(Long commentId);
    void commentToPost(Long commentId,Long postId);
    void commentToEmployee(Long commentId,Long employeeId);
 

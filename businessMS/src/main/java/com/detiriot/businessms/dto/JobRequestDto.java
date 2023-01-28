@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
-import java.util.List;
+import javax.persistence.Transient;
 
 @Data
 @NoArgsConstructor
@@ -16,8 +15,9 @@ public class JobRequestDto {
     private String description;
     private Boolean archived;
     private Long companyId;
+    @Transient
+    private DepartmentResponseDto departmentResponseDto;
 
-    @ElementCollection
-    private List<Long> employeeIds;
+
 
 }

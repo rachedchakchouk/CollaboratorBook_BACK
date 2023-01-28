@@ -14,6 +14,7 @@ public interface UserService {
     Employee getEmployeeByUser(String username);
     List<User>getUsers();
     void addEmployeeToUser(Long uId,Long eId);
+    void deleteByEmployeeId(Long employeeId);
 
 
 

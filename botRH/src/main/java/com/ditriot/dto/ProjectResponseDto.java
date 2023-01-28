@@ -1,6 +1,5 @@
 package com.ditriot.dto;
 
-import com.ditriot.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class ProjectResponseDto {
     private String client;
     private Long idCompany;
 
+    @Transient
 
-//    private DepartmentResponseDto department;
-//    private List<EmployeeResponseDto> employeesProjects;
+private List<EmployeeResponseDto> employeesProjects;
 }

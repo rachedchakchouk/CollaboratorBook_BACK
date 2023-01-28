@@ -2,6 +2,7 @@ package com.ditriot.service;
 
 import com.ditriot.dto.ContractRequestDto;
 import com.ditriot.dto.ContractResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.mapper.ContractMapper;
 import com.ditriot.mapper.EmployeeMapper;
 import com.ditriot.model.Contract;
@@ -182,6 +183,13 @@ public class ContractServiceImpl implements ContractService {
     public void deleteContract(Long id) {
         Contract contract = contractRepo.findById(id).get();
         contractRepo.delete(contract);
+    }
+
+    @Override
+    public EmployeeResponseDto getEmployeeFromContract(Long id) {
+        Contract contract = contractRepo.findById(id).get();
+        Employee employee=contract.getEmployee();
+        return employeeMapper.employeeToEmployeeResponseDto(employee);
     }
 
 

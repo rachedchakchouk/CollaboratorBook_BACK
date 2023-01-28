@@ -2,6 +2,7 @@ package com.ditriot.controller;
 
 import com.ditriot.dto.CommentRequestDto;
 import com.ditriot.dto.CommentResponseDto;
+import com.ditriot.dto.EmployeeResponseDto;
 import com.ditriot.mapper.CommentMapper;
 import com.ditriot.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,10 @@ public class CommentController {
     public void addToEmployee(@PathVariable Long commentId,@PathVariable Long employeeId){commentService.commentToEmployee(commentId,employeeId);}
     @DeleteMapping("delete/{id}")
     public void delete(@PathVariable Long id){commentService.deleteComment(id);}
+    @GetMapping("/getwriter/{id}")
+    public EmployeeResponseDto getWriter(@PathVariable Long id){
+        return commentService.getWriter(id);
+    }
 
 
 

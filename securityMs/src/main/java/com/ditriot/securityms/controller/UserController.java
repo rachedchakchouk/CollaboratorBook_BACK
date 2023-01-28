@@ -79,7 +79,10 @@ public class UserController {
         userService.addEmployeeToUser(form.getUId(), form.getEId());
         return ResponseEntity.ok().build();
     }
-
+@DeleteMapping("/user/deletebyEid/{ide}")
+public void deleteUserByEmployee(@PathVariable Long ide){
+        userService.deleteByEmployeeId(ide);
+}
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);

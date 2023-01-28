@@ -29,6 +29,7 @@ public class Document {
     private List<Post> posts;
 
 
+
     public Document(String name, String fileType, byte[] data) {
         this.name = name;
         this.fileType = fileType;

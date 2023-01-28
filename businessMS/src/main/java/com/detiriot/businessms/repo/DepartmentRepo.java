@@ -9,4 +9,5 @@ import java.util.List;
 public interface DepartmentRepo extends JpaRepository<Department,Long> {
     List<Department> findByOffice(Office office);
     List<Department> findDepartmentsByOfficeAndArchived(Office office,Boolean b);
+
 }

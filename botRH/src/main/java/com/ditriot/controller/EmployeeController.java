@@ -64,6 +64,21 @@ public class EmployeeController {
     public List<EmployeeResponseDto> findArchivedByCompany(@PathVariable Long cId) {
         return employeeService.getArchivedEmployeesByCompany(cId);
     }
+    @GetMapping("/archived/getemloyeebyproject/{pId}")
+    @ResponseBody
+    public List<EmployeeResponseDto> findArchivedByProject(@PathVariable Long pId) {
+        return employeeService.getArchivedByProject(pId);
+    }
+    @GetMapping("/active/getemloyeebyproject/{pId}")
+    @ResponseBody
+    public List<EmployeeResponseDto> findActiveByProject(@PathVariable Long pId) {
+        return employeeService.getActiveByProject(pId);
+    }
+    @GetMapping("/getemloyeebyproject/{pId}")
+    @ResponseBody
+    public List<EmployeeResponseDto> findByProject(@PathVariable Long pId) {
+        return employeeService.getByProject(pId);
+    }
     @PutMapping("/update/{id}")
     @ResponseBody
     public EmployeeResponseDto updateEmployee(@RequestBody EmployeeRequestDto employeeRequestDto,@PathVariable Long id){

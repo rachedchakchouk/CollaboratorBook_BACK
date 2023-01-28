@@ -27,6 +27,6 @@ public class Project {
     @Transient
     private Company company;
 
-   @ManyToMany(cascade = CascadeType.ALL)
-    private List<Employee> employeesProjects;
+   @ManyToMany
+    private List<Employee> employees;
 }

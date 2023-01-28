@@ -38,6 +38,7 @@ public class EmployeeResponseDto {
     private Boolean archived;
     @Transient
     private JobResponseDto job;
+
 //    @Transient
 //    private Company company;
 }

@@ -11,7 +11,9 @@ public interface ProjectService {
     List<ProjectResponseDto>getByEmployee(Long id);
     List<ProjectResponseDto>getActiveByEmployee(Long id);
     List<ProjectResponseDto>getArchivedByEmployee(Long id);
-
+    List<ProjectResponseDto>getByCompany(Long id);
+    List<ProjectResponseDto>getActiveByCompany(Long id);
+    List<ProjectResponseDto>getArchivedByCompany(Long id);
 
     ProjectResponseDto addProject(ProjectRequestDto projectRequestDto);
     ProjectResponseDto updateProject(ProjectRequestDto projectRequestDto, Long id);

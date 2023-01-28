@@ -18,7 +18,7 @@ public class Post {
     private Long id;
     private String text;
     private LocalDate date;
-
+    private  String photo;
     private Boolean archived;
     @ManyToOne
     private Employee employee;

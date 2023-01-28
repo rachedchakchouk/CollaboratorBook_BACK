@@ -17,7 +17,7 @@ public class Department {
     private Long id;
     private String name;
     private  Boolean archived;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Office office;
     @OneToMany(mappedBy="department", cascade = CascadeType.ALL)
      private List<Job> jobs;

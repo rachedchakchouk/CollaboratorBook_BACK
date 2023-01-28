@@ -1,6 +1,7 @@
 package com.detiriot.businessms.service;
 
 import com.detiriot.businessms.dto.CompanyResponseDto;
+import com.detiriot.businessms.dto.DepartmentResponseDto;
 import com.detiriot.businessms.dto.JobRequestDto;
 import com.detiriot.businessms.dto.JobResponseDto;
 
@@ -13,7 +14,7 @@ public interface JobService {
     List<JobResponseDto> getByDepartement(Long id);
     List<JobResponseDto> getActiveByDepartement(Long id);
     List<JobResponseDto> getArchivedByDepartement(Long id);
-
+    DepartmentResponseDto getDepByJobId(Long id);
 
     CompanyResponseDto getCompanyFromJob(Long idJob);
     List<JobResponseDto> getAllJobByCompany(Long id);
@@ -24,6 +25,7 @@ public interface JobService {
     void addJobToDepartement(Long jobId,Long departementId);
 
     Long getCompanyIdfromJob(Long id);
+    DepartmentResponseDto getDepFromJob(Long id);
 
 
 }

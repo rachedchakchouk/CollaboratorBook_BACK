@@ -1,13 +1,11 @@
 package com.ditriot.securityms.service;
 
 import com.ditriot.securityms.model.Employee;
-
 import com.ditriot.securityms.model.Role;
 import com.ditriot.securityms.model.User;
 import com.ditriot.securityms.repo.RoleRepo;
 import com.ditriot.securityms.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -165,7 +162,9 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     @Override
     public Employee getEmployeeByUser(String username) {
         User user = userRepo.findByUsername(username);
+        System.out.println(user.getUsername() + "id"+ user.getId());
         Employee employee= employeeService.getEmployeeById(user.getIdEmployee());
+        System.out.println(employee.getFirstName());
         return employee;
     }
 
@@ -223,7 +222,12 @@ public class UserServiceImpl implements UserService , UserDetailsService {
 
     }
 
+    @Override
+    public void deleteByEmployeeId(Long employeeId) {
+        User user =userRepo.findByIdEmployee(employeeId);
+        userRepo.delete(user);
 
+    }
 
 
     @Override

@@ -1,9 +1,9 @@
 package com.detiriot.businessms.controller;
 
 import com.detiriot.businessms.dto.CompanyResponseDto;
+import com.detiriot.businessms.dto.DepartmentResponseDto;
 import com.detiriot.businessms.dto.JobRequestDto;
 import com.detiriot.businessms.dto.JobResponseDto;
-import com.detiriot.businessms.mapper.JobMapper;
 import com.detiriot.businessms.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,11 @@ public class JobController {
     @GetMapping
     public List<JobResponseDto> getJobs() {
         return jobService.getAll();
+    }
+    @GetMapping("/getdep/{id}")
+    @ResponseBody
+    public DepartmentResponseDto DepByJobId(@PathVariable(name = "id") Long id){
+        return jobService.getDepByJobId(id);
     }
 
     @GetMapping("/{id}")
