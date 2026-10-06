@@ -1,5 +1,6 @@
 package com.ditriot.securityms.filter;
 
+import com.ditriot.securityms.security.JwtAlgorithm;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -45,7 +46,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = JwtAlgorithm.get();
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decoded = jwtVerifier.verify(token);
                     String username = decoded.getSubject();

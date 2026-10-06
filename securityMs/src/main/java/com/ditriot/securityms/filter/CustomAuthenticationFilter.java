@@ -1,5 +1,6 @@
 package com.ditriot.securityms.filter;
 
+import com.ditriot.securityms.security.JwtAlgorithm;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,6 @@ public class CustomAuthenticationFilter  extends UsernamePasswordAuthenticationF
        String username =request.getParameter("username");
        String password =request.getParameter("password");
        log.info("username is :{}",username);
-       log.info("password is :{}",password);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -48,7 +48,7 @@ public class CustomAuthenticationFilter  extends UsernamePasswordAuthenticationF
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
         com.ditriot.securityms.model.User user1= new com.ditriot.securityms.model.User();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = JwtAlgorithm.get();
         String access_token = JWT.create().
                 withSubject(user.getUsername()).
                 withExpiresAt(new Date(System.currentTimeMillis()+10*60*1000)).
