@@ -81,6 +81,10 @@ Eureka dashboard: http://localhost:8761
 | botRH | `/RH/employees`, `/RH/contracts`, `/RH/clauses`, `/RH/holidays`, `/RH/projects`, `/RH/documents`, `/RH/post`, `/RH/comment`, `/RH/notifications`, `/RH/Reclamations` |
 | businessMS | `/business/Companies`, `/business/Departments`, `/business/offices`, `/business/jobs` |
 
+## License
+
+All rights reserved — the code is shared for portfolio review only. See [LICENSE](LICENSE).
+
 ## Author
 
 **Rached Chakchouk** — Full Stack Software Engineer (Java / Spring Boot / Angular)
