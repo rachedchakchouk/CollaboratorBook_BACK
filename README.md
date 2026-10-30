@@ -38,8 +38,8 @@ with request / response DTOs mapped by **MapStruct**, and inter-service calls th
 
 ## Tech stack
 
-Java 8 · Spring Boot 2.7 · Spring Cloud 2021 (Eureka, Gateway, OpenFeign) · Spring Security · JWT (auth0 java-jwt)
-· Spring Data JPA / Hibernate · MySQL · MapStruct · Lombok · Swagger (Springfox) · Maven
+Java 8 · Spring Boot 2.7.18 · Spring Cloud 2021.0.9 (Eureka, Gateway, OpenFeign) · Spring Security · JWT (auth0 java-jwt)
+· Spring Data JPA / Hibernate · MySQL · MapStruct · Lombok · OpenAPI (springdoc, `/swagger-ui.html`) · Maven
 
 ## Configuration
 

@@ -15,13 +15,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableFeignClients
 @EnableEurekaClient
 @CrossOrigin("*")
-@EnableSwagger2
 public class SecurityMsApplication {
 
     public static void main(String[] args) {

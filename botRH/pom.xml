@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.0</version>
+        <version>2.7.18</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ditriot</groupId>
@@ -15,6 +15,14 @@
     <description>botRH</description>
     <properties>
         <java.version>1.8</java.version>
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
+        <!-- Correctifs de sécurité sur la même ligne que celle gérée par Spring Boot 2.7.18 -->
+        <spring-framework.version>5.3.39</spring-framework.version>
+        <spring-security.version>5.7.14</spring-security.version>
+        <tomcat.version>9.0.123</tomcat.version>
+        <mysql.version>8.4.0</mysql.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <springdoc.version>1.8.0</springdoc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,8 +47,8 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -58,23 +66,19 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- springfox (abandonné, swagger-ui et guava vulnérables) remplacé par springdoc-openapi -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
     </dependencies>
 
@@ -86,7 +90,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2021.0.3</version>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -109,13 +113,13 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.20</version>
+                            <version>${lombok.version}</version>
 
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
+                            <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

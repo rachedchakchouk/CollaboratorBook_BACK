@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import sun.util.calendar.BaseCalendar;
 
 
@@ -38,7 +37,6 @@ import java.util.List;
 //@EnableDiscoveryClient
 //@EnableConfigurationProperties
 @SpringBootApplication
-@EnableSwagger2
 @EnableFeignClients
 @EnableEurekaClient
 public class BotRhApplication {
